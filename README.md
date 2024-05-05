@@ -48,10 +48,5 @@ http://localhost:5173/
 
 You should see something like:
 
-*[Your screenshot here]*
-
-## Screenshot
-
 ![Screenshot](/public/Demo.png)
 
-Add the above line at the end of the README to include a screenshot. Replace `path/to/your/screenshot.png` with the actual path to your screenshot image. Make sure the image file is in the repository and has the correct file name.
