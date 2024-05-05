@@ -18,6 +18,7 @@ export default function MinitToken() {
     const fromWallet = Keypair.generate();
     let mint:PublicKey;
     let fromTokenAccount: Account;
+    const toWallet = new PublicKey("6917dyPmByyGvoCawAqsnD4xy9h96exmB4cpN47u9oMo");
 
 
     async function createToken() {
@@ -61,6 +62,32 @@ export default function MinitToken() {
         console.log(`Mint Signature: ${signature}`);
     }
 
+    async function checkBalance(){
+        // get supply of token we have minted into existance
+        const mintInfo =  await getMint(connection, mint);
+               console.log(mintInfo.supply);
+
+        //get the amount of token left in account
+        const tokenAccountInfo =  await getAccount(connection, fromTokenAccount.address);
+              console.log(tokenAccountInfo.amount);
+    }
+
+    async function sendToken() {
+        //Get the token account of the wallet address, and if doesn't exit create it
+        const toTokenAccount = await getOrCreateAssociatedTokenAccount(connection, fromWallet, mint, toWallet);
+        console.log(`toTokenAccount: ${toTokenAccount.address}`);
+
+        const signature = await transfer(
+            connection,
+            fromWallet,
+            fromTokenAccount.address,
+            toTokenAccount.address,
+            fromWallet.publicKey,
+            5000000000 //5 billion
+        );
+        console.log(`Transfer Signature: ${signature}`);
+    }
+
 
 
     return (
@@ -70,8 +97,8 @@ export default function MinitToken() {
             </div>
             <button onClick={createToken} className="p-4 m-2 bg-green-500">Create Token</button>
             <button onClick={mintToken} className="p-4 m-2 bg-orange-500">Mint Token</button>
-            <button className="p-4 m-2 bg-amber-500">Check Balance</button>
-            <button className="p-4 m-2 bg-red-500">Send Token</button>
+            <button onClick={checkBalance} className="p-4 m-2 bg-amber-500">Check Balance</button>
+            <button onClick={sendToken} className="p-4 m-2 bg-red-500">Send Token</button>
 
         </div>
     )
