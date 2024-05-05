@@ -48,6 +48,19 @@ export default function MinitToken() {
         }
     }
 
+    async function mintToken(){
+        //Mint 1 new token to the "fromTokenAccount" account we just created
+        const signature = await mintTo(
+            connection,
+            fromWallet,
+            mint,
+            fromTokenAccount.address,
+            fromWallet.publicKey,
+            50000000000 //50 billion
+        );
+        console.log(`Mint Signature: ${signature}`);
+    }
+
 
 
     return (
@@ -56,7 +69,7 @@ export default function MinitToken() {
                 <h1 className="text-center text-4xl font-bold text-white mb-5">Mint Token Section</h1>
             </div>
             <button onClick={createToken} className="p-4 m-2 bg-green-500">Create Token</button>
-            <button className="p-4 m-2 bg-orange-500">Mint Token</button>
+            <button onClick={mintToken} className="p-4 m-2 bg-orange-500">Mint Token</button>
             <button className="p-4 m-2 bg-amber-500">Check Balance</button>
             <button className="p-4 m-2 bg-red-500">Send Token</button>
 
